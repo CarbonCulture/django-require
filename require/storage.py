@@ -95,6 +95,17 @@ class OptimizedFilesMixin(object):
                             dst_handle.write(block)
                 # Store details of file.
                 compile_info[name] = hash.digest()
+            # Compile additional build profiles
+            # We do this before the main profile in case there is any file
+            # overlap, the main one has the final say
+            for additional_profile, additional_config in require_settings.REQUIRE_ADDITIONAL_PROFILES.items():
+                profile_build_js_path = env.compile_dir_path(additional_config["build_profile"])
+                env.run_optimizer(
+                    profile_build_js_path,
+                    dir = env.build_dir,
+                    appDir = env.compile_dir,
+                    baseUrl = require_settings.REQUIRE_BASE_URL,
+                )
             # Run the optimizer.
             if require_settings.REQUIRE_BUILD_PROFILE is not False:
                 if require_settings.REQUIRE_BUILD_PROFILE is not None:
@@ -103,15 +114,6 @@ class OptimizedFilesMixin(object):
                     app_build_js_path = env.resource_path("app.build.js")
                 env.run_optimizer(
                     app_build_js_path,
-                    dir = env.build_dir,
-                    appDir = env.compile_dir,
-                    baseUrl = require_settings.REQUIRE_BASE_URL,
-                )
-            # Compile additional build profiles
-            for additional_profile, additional_config in require_settings.REQUIRE_ADDITIONAL_PROFILES.items():
-                profile_build_js_path = env.compile_dir_path(additional_config["build_profile"])
-                env.run_optimizer(
-                    profile_build_js_path,
                     dir = env.build_dir,
                     appDir = env.compile_dir,
                     baseUrl = require_settings.REQUIRE_BASE_URL,
