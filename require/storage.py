@@ -107,6 +107,15 @@ class OptimizedFilesMixin(object):
                     appDir = env.compile_dir,
                     baseUrl = require_settings.REQUIRE_BASE_URL,
                 )
+            # Compile additional build profiles
+            for additional_profile, additional_config in require_settings.REQUIRE_ADDITIONAL_PROFILES.items():
+                profile_build_js_path = env.compile_dir_path(additional_config["build_profile"])
+                env.run_optimizer(
+                    profile_build_js_path,
+                    dir = env.build_dir,
+                    appDir = env.compile_dir,
+                    baseUrl = require_settings.REQUIRE_BASE_URL,
+                )
             # Compile standalone modules.
             if require_settings.REQUIRE_STANDALONE_MODULES:
                 shutil.copyfile(
