@@ -105,6 +105,7 @@ class OptimizedFilesMixin(object):
                     dir = env.build_dir,
                     appDir = env.compile_dir,
                     baseUrl = require_settings.REQUIRE_BASE_URL,
+                    **require_settings.REQUIRE_ADDITIONAL_ARGS
                 )
             # Run the optimizer.
             if require_settings.REQUIRE_BUILD_PROFILE is not False:
@@ -117,6 +118,7 @@ class OptimizedFilesMixin(object):
                     dir = env.build_dir,
                     appDir = env.compile_dir,
                     baseUrl = require_settings.REQUIRE_BASE_URL,
+                    **require_settings.REQUIRE_ADDITIONAL_ARGS
                 )
             # Compile standalone modules.
             if require_settings.REQUIRE_STANDALONE_MODULES:
@@ -137,6 +139,7 @@ class OptimizedFilesMixin(object):
                         include = standalone_module,
                         out = env.build_dir_path(standalone_config["out"]),
                         baseUrl = os.path.join(env.compile_dir, require_settings.REQUIRE_BASE_URL),
+                        **require_settings.REQUIRE_ADDITIONAL_ARGS
                     )
                 else:
                     raise ImproperlyConfigured("No 'out' option specified for module '{module}' in REQUIRE_STANDALONE_MODULES setting.".format(

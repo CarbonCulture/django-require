@@ -45,4 +45,9 @@ class LazySettings(object):
             'rhino': 'require.environments.RhinoEnvironment',
             })
 
+    @property
+    def REQUIRE_ADDITIONAL_ARGS(self):
+        return getattr(django_settings, "REQUIRE_ADDITIONAL_ARGS", {})
+
+
 settings = LazySettings()
